@@ -5,7 +5,9 @@ import java.util.List;
 public class Main {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
-        List<String> todos = new ArrayList<>();
+//        List<String> todos = new ArrayList<>();
+        List<Todo> todos = new ArrayList<>();
+
         while (true) {
             System.out.println("==== Todo App ====");
             System.out.println("1. 할 일 추가");
@@ -14,15 +16,18 @@ public class Main {
             System.out.println("0. 종료");
             System.out.print("메뉴 선택: ");
             String input = scanner.nextLine();
+
             if (input.equals("1")) {
                 System.out.print("할 일 입력: ");
-                String todo = scanner.nextLine();
+                String title = scanner.nextLine();
+                Todo todo = new Todo(title);
                 todos.add(todo);
                 System.out.println("할 일이 추가되었습니다.");
             }else if (input.equals("2")) {
                 int index = 1;
-                for(String todo : todos) {
-                    System.out.println(index + ". " + todo);
+                for(Todo todo : todos) {
+                    String status = todo.getIsComplete() ? "[완료]" : "[미완료]";
+                    System.out.println(index + ". " + status + todo.getTitle());
                     index++;
                 }
             }else if (input.equals("3")) {
