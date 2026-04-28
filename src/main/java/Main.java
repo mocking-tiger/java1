@@ -3,9 +3,22 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Main {
+    private static int getValidatedIndex(String userInput, List<Todo> todos){
+        if(!userInput.matches("\\d+")){
+            System.out.println("⚠️ 숫자만 입력 가능합니다.");
+            return -1;
+        }
+        int index = Integer.parseInt(userInput) - 1;
+        if(index >= todos.size() || index < 0){
+            System.out.println("존재하지 않는 인덱스 입니다.");
+            return -1;
+        }else{
+            return index;
+        }
+    }
+
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
-//        List<String> todos = new ArrayList<>();
         List<Todo> todos = new ArrayList<>();
 
         while (true) {
@@ -35,28 +48,18 @@ public class Main {
                 }
             }else if (input.equals("3")) {
                 System.out.print("삭제할 할 일의 번호 입력:");
-                String deleteInput = scanner.nextLine();
-                if (!deleteInput.matches("\\d+")) {
-                    System.out.println("⚠️ 숫자만 입력 가능합니다.");
-                    continue;
-                }
-                int index = Integer.parseInt(deleteInput) - 1;
-                if(index >= todos.size() || index < 0) {
-                    System.out.println("존재하지 않는 인덱스 입니다.");
+                String todoInput = scanner.nextLine();
+                int index = getValidatedIndex(todoInput, todos);
+                if(index == -1){
                     continue;
                 }
                 todos.remove(index);
                 System.out.println("삭제 완료되었습니다.");
             }else if (input.equals("4")) {
                 System.out.print("상태변경할 할 일의 번호 입력:");
-                String deleteInput = scanner.nextLine();
-                if (!deleteInput.matches("\\d+")) {
-                    System.out.println("⚠️ 숫자만 입력 가능합니다.");
-                    continue;
-                }
-                int index = Integer.parseInt(deleteInput) - 1;
-                if(index >= todos.size() || index < 0) {
-                    System.out.println("존재하지 않는 인덱스 입니다.");
+                String todoInput = scanner.nextLine();
+                int index = getValidatedIndex(todoInput, todos);
+                if(index == -1){
                     continue;
                 }
                 Todo todo = todos.get(index);
