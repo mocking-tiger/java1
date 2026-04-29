@@ -42,8 +42,8 @@ public class Main {
                 for(Todo todo : todos) {
                     String status = todo.getIsComplete() ? "[완료]" : "[미완료]";
                     System.out.println(index + "." + status + todo.getTitle());
-//                    17버전에서는 String Templates 안됨(21+)
-//                    System.out.println(STR. "\{index}.\{status}\{todo.getTitle()}");
+//                    17버전에서는 String Templates 안됨(21+, 21버전에서도 정식기능은 아니고 preview라고 함)
+//                    System.out.println(STR."\{index}.\{status}\{todo.getTitle()}");
                     index++;
                 }
             }else if (input.equals("3")) {
