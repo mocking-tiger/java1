@@ -3,6 +3,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Main {
+
+    // 사용자 입력값 유효성 검사
     private static int getValidatedIndex(String userInput, List<Todo> todos){
         if(!userInput.matches("\\d+")){
             System.out.println("⚠️ 숫자만 입력 가능합니다.");
@@ -15,6 +17,53 @@ public class Main {
         }else{
             return index;
         }
+    }
+
+    // 할 일 추가
+    private static void addTodo(Scanner scanner, List<Todo> todos){
+        System.out.print("할 일 입력: ");
+        String title = scanner.nextLine();
+        Todo todo = new Todo(title);
+        todos.add(todo);
+        System.out.println("할 일이 추가되었습니다.");
+    }
+
+    // 할 일 조회
+    private static void viewTodos(List<Todo> todos){
+        int index = 1;
+        for(Todo todo : todos) {
+            String status = todo.getIsComplete() ? "[완료]" : "[미완료]";
+            System.out.println(index + "." + status + todo.getTitle());
+//                    17버전에서는 String Templates 안됨(21+, 21버전에서도 정식기능은 아니고 preview라고 함)
+//                    System.out.println(STR."\{index}.\{status}\{todo.getTitle()}");
+            index++;
+        }
+    }
+
+    // 할 일 삭제
+    private static void deleteTodo(Scanner scanner, List<Todo> todos){
+        System.out.print("삭제할 할 일의 번호 입력:");
+        String todoInput = scanner.nextLine();
+        int index = getValidatedIndex(todoInput, todos);
+        if(index == -1){
+            return;
+        }
+        todos.remove(index);
+        System.out.println("삭제 완료되었습니다.");
+    }
+
+    // 할 일 상태변경
+    private static void toggleTodoStatus(Scanner scanner, List<Todo> todos){
+        System.out.print("상태변경할 할 일의 번호 입력:");
+        String todoInput = scanner.nextLine();
+        int index = getValidatedIndex(todoInput, todos);
+        if(index == -1){
+            return;
+        }
+        Todo todo = todos.get(index);
+        todo.setIsComplete(!todo.getIsComplete());
+        String status = todo.getIsComplete() ? "[완료]" : "[미완료]";
+        System.out.println((index+1) + "번 할 일의 상태가" + status + "로 변경되었습니다.");
     }
 
     public static void main(String[] args) {
@@ -32,40 +81,13 @@ public class Main {
             String input = scanner.nextLine();
 
             if (input.equals("1")) {
-                System.out.print("할 일 입력: ");
-                String title = scanner.nextLine();
-                Todo todo = new Todo(title);
-                todos.add(todo);
-                System.out.println("할 일이 추가되었습니다.");
+                addTodo(scanner, todos);
             }else if (input.equals("2")) {
-                int index = 1;
-                for(Todo todo : todos) {
-                    String status = todo.getIsComplete() ? "[완료]" : "[미완료]";
-                    System.out.println(index + "." + status + todo.getTitle());
-//                    17버전에서는 String Templates 안됨(21+, 21버전에서도 정식기능은 아니고 preview라고 함)
-//                    System.out.println(STR."\{index}.\{status}\{todo.getTitle()}");
-                    index++;
-                }
+                viewTodos(todos);
             }else if (input.equals("3")) {
-                System.out.print("삭제할 할 일의 번호 입력:");
-                String todoInput = scanner.nextLine();
-                int index = getValidatedIndex(todoInput, todos);
-                if(index == -1){
-                    continue;
-                }
-                todos.remove(index);
-                System.out.println("삭제 완료되었습니다.");
+                deleteTodo(scanner, todos);
             }else if (input.equals("4")) {
-                System.out.print("상태변경할 할 일의 번호 입력:");
-                String todoInput = scanner.nextLine();
-                int index = getValidatedIndex(todoInput, todos);
-                if(index == -1){
-                    continue;
-                }
-                Todo todo = todos.get(index);
-                todo.setIsComplete(!todo.getIsComplete());
-                String status = todo.getIsComplete() ? "[완료]" : "[미완료]";
-                System.out.println((index+1) + "번 할 일의 상태가" + status + "로 변경되었습니다.");
+                toggleTodoStatus(scanner, todos);
             }else if(input.equals("0")){
                 System.out.println("프로그램을 종료합니다.");
                 break;
